@@ -1,0 +1,66 @@
+rrt hem grafik yaratýp hem de yolu bulur. yol, optimal bir yol olmak zorunda deðildir.
+rrt*, en kýsa yolu bulmayý hedefleyen optime edilmiþ bir algoritmadýr.
+
+RRT
+---
+rrtnin mantýðý düzdür. rastgele noktalar yaratýlýr ve her nokta en yakýndakine baðlanýr.
+ancak noktalar yaratýlmadan önce her adýmda, noktanýn bir engelin içinde olup olmadýðý kontrol edilmelidir.
+dahasý, baðlantýlar da engeller içinde kalmamalýdýr. bu algoritma, limit iterasyona ulaþýnca ya da hedefe ulaþýnca sona erer
+rasgele nokta belirlemek, kiþiye baðlýdýr. basit metodlar, random fonksiyonu gibi kullanýlabilir.
+basit uygulamalar için bu tarz yaklaþýmlar yeterlidir.
+rrt çok kübik graph lar ortaya çýkarýr. bu graph ýn yapýsal doðasý optimal bir yol bulmayý engeller.
+benzetme yapmak gerekirse 2 noktanýn hipotenüsünü almaktansa, üçgenin 2 ayaðý etrafýnda gezinir.
+bu açýkça yolu uzatýr. bu sorun rrt* ile çözülüyor.
+rrtnin yararý hýzý ve kodlamasýdýr. diðer yol bulma algoritmalarýna kýyasla, rrt baya bi hýzlý.
+algoritmanýn en maliyetli tarafý, graph büyürken en yakýn node u bulmaktýr.
+
+RRT*
+---
+rrt*, rrt'nin optimum halidir. node sayýsý arttýkça, algoritma git gide daha kýsa yolu bulur.
+gerçekçi olmasa da, bu ifade en kýsa yolu geliþtirmek için çalýþtýðýný göstermektedir.
+rrt*ýn temel mantýðý rrt ile aynýdýr, ancak 2 kritik nokta ile önemli derecede farklý sonuç yaratýr.
+öncelikle, rrt* her bir vertexin parent vertexiyle arasýndaki uzaklýðý kaydeder. bunu cost() deðiþkeniyle tutalým.
+graph'da en yakýn node bulunduktan sonra, yeni node'un etrafýndaki node lar incelenir.
+eðer cost()u önceki node'dan daha düþük bir node bulunursa, az cost()u olan node önceki node'un yerini alýr.
+böyle rrt'deki kübik yapý kaybolur.
+rrt*ýn 2. farký, aðaca yeni baðlantýlar ekler.
+vertex, cost()u az olan komþuya baðlantýktan sonra, komþular yine kontrol edilir.
+komþular, cost()'larý azalmasýn diye yeni vertexler eklendikçe sürekli kontrol edilir.
+eðer cost() azalýrsa, komþu yeni eklenen vertex'e baðlanýr. bu özellik yolu daha yumuþak yapar.
+rrt* inanýlmaz derecede düz yollar üretir. rrt*ýn graph ý , rrt'den karakteristik açýdan farklýdýr.
+optimal yolu bulmak için,özellikle çok engel barýndýran ortamlarda,rrt* çok kullanýþlýdýr.
+eðer gidilecek hedef deðiþirse, oluþturulan graph üzerinden hýzlýca yeni yol bulunabilir(buradan anladýðým þey þu, rrt* ilk çalýþtýrýldýðýnda biraz yavaþ çalýþacak çünkü yeni node'lar üretmekle meþgul olacak 
+ancak bir kere graph oluþturulduðunda diðer yollarý bulmada bir kez daha uðraþmayacak yani start ve goal koordinatlarý kod içinden deðiþtirildiðinde tekrardan yeni node'lar oluþturmadan hali hazýrda oluþturulmuþ
+olanlar üzerinden yeni yolu bulabilecek)
+iþlem gücünün büyük bir bölümü engellerden kaçmak için harcanýr. engellerden kaçma, her yeni node un yerleþtirilmesiyle, komþusuyla birleþtirilmesiyle ya da yeniden birleþtirilmesiyle kontrol edilmelidir.
+bu kontrol etme sayýsýnda büyük bir artýþ demektir. ancak oluþturulan yollarýn baþarýsý reddedilemez. çokzel çalýþýyo yav
+
+
+****************************************************************************
+
+
+rrt, büyüyen bir aðaçtýr
+bu aðaç baþlangýç noktasýndan itibaren rastgele oluþan noktalarla birlikte büyür
+bazý kurallar karþýlýðýnda oluþan nokta öncekine baðlanýr(en yakýn iki noktayý birbirine baðla gibi)
+limit iterasyona ya da hedefe ulaþana kadar aðaç büyümeye devam eder
+rrtnin dezavantajý çok zikzak olabilir
+bu problemi rrt* çözüyor
+rrt* da her iterasyonda tüm noktalar inceleniyor.
+eðer oluþan noktalar parenta doðru herhangi bir engele rastlamadan gidiyorsa bu yol düzleþtiriliyor
+yani noktanýn parentý, child a kaydýrýlýyor(parent=child)
+rrt* sürekli aðacýn dallarýný düzeltmeye çalýþýr, böylece zikzaklar kaybolur
+matematiksel olarak, noktalarýn sayýsý sonsuzluða yaklaþtýkça rrt*ýn oluþturduðu yolun daha kýsa olduðu kanýtlanmýþtýr
+rrt ve rrt* a eþit olarak 4000 node ve 100x100lük bir alan verirsek aðacýn büyümesi tamamlandýðýnda rrt*ýn oluþturduðu yollar daha düzenli olacaktýr
+rrt*ýn oluþturduðu yol daha az zikzak, böylece daha kýsa bir yol sunacak bize
+4 soru var
+1)rrt*, rrtye göre daha kýsa yollar oluþturuyor. ancak gerçek dünyada "en kýsa" yolu bulmak mý gerekiyor?(burada muhtemelen objelerin dibinden deðil de onlara deðmeden gitmekten bahsediyor sanýrsam)
+2)rrt* her adýmda sürekli diðer node larý incelemekle ve bunlarý yeniden baðlamakla meþgul. kesin olmayan "en kýsa" yolu bulmak için bunlara kaynak ayýracaðýmýza çevre algýlama/tehlike deðerlendirmesine ayýramaz mýyýz?
+3)2.de "kesin olmayan" derken þunu kastediyorum: sadece noktalar sonsuzluða ulaþýnca  "en kýsa yol"a sahip oluyoruz. peki sadece 100 node a sahipsek? 4000 nokta ve 100x100 lük örnekte 1000. node a kadar pek bir fark gözlenmiyordu. gerçekten bu kaynaðý rrt*a vermeli miyiz?
+(4.ye geçmeden önce bir taným paylaþmak zorundayým: robotik'te eðer bir robotun toplam serbestlik derecesi, kontrol edebildiðimiz serbestlik derecesine eþitse bu platform holonomic diyebiliriz.)
+4)1. soruda optimal yol ile ilgili konuþmuþtuk. optimal bir yolumuz olsa bile, rrt, boþluklarý keþfetme(space exploring i böyle çevirdim) ve bunun üzerinden yol bulma üzerine kurulu. rrt nin diðer algoritmalara(a*, artificial potential field) göre avantajý node lara holonomik olmayan kýsýtlamalar getirebilmesidir, ve her adýmda sdece bir node oluþturduðumuza göre göreceli olarak diðer algoritmalardan daha hýzlý. bu yüzden garanti olmayan optimal yol için bu 2 avantajý kaybetmek zekice mi? 
+bu yazýlanlar sýnýrlý kaynaklar ile çalýþtýrýlan rrt/rrt* ile alakalý. eðer süper bir CPU'nuz varsa bu yazýlanlarý unutabilirsiniz.
+
+
+****************************************************************************
+
+
